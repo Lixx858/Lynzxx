@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQC STUDIO - Mobile Build</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS SAMA PERSIS SEPERTI YANG ANDA KIRIM --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .gradient-pink {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.4) 0%, rgba(255, 64, 129, 0) 70%);
+            filter: blur(60px);
+            animation: floatPink 15s ease-in-out infinite;
+        }
+        
+        .gradient-blue {
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(33, 150, 243, 0.4) 0%, rgba(33, 150, 243, 0) 70%);
+            filter: blur(60px);
+            animation: floatBlue 15s ease-in-out infinite;
+        }
+        
+        @keyframes floatPink {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 30px) scale(1.1); }
+        }
+        
+        @keyframes floatBlue {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, -30px) scale(1.1); }
+        }
+        
+        .container-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .mobile-container {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(20, 20, 20, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            border: 1px solid #333333;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(15px);
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .mobile-header {
+            margin-bottom: 25px;
+            position: relative;
+            animation: slideIn 0.6s ease 0.2s forwards;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .header-left {
+            margin-bottom: 15px;
+        }
+        
+        .studio-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .build-version {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #aaaaaa;
+            margin-bottom: 15px;
+        }
+        
+        .divider-line {
+            height: 1px;
+            background: #333333;
+            width: 100%;
+            margin: 10px 0 15px 0;
+        }
+        
+        .ready-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(0, 200, 83, 0.1);
+            color: #00c853;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #00c853;
+            animation: fadeIn 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .ready-dot {
+            width: 8px;
+            height: 8px;
+            background: #00c853;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .input-section {
+            margin-bottom: 25px;
+            animation: fadeIn 0.8s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .input-label i {
+            color: #aaaaaa;
+            font-size: 0.9rem;
+        }
+        
+        .message-input {
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333333;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .message-input:focus {
+            outline: none;
+            border-color: #555555;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .message-input:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        /* ===== ROW LAYOUT ===== */
+        .row-group {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .row-group .input-group {
+            flex: 1;
+            min-width: 0;
+            margin-bottom: 0;
+        }
+
+        .row-group .custom-select {
+            padding: 14px 28px 14px 10px;
+            font-size: 0.8rem;
+        }
+
+        .row-group .input-label {
+            font-size: 0.78rem;
+        }
+
+        .row-group .custom-select-wrapper::after {
+            right: 10px;
+            font-size: 0.75rem;
+        }
+        
+        /* ===== CUSTOM SELECT ===== */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .custom-select {
+            width: 100%;
+            padding: 14px 20px;
+            padding-right: 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333333;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1rem;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .custom-select:focus {
+            outline: none;
+            border-color: #555555;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .custom-select:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .custom-select option {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+        
+        .custom-select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaaaaa;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+        
+        .custom-select-wrapper.disabled::after {
+            opacity: 0.4;
+        }
+        
+        /* ===== END CUSTOM SELECT ===== */
+        
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background: #000000;
+            color: white;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            animation: fadeIn 0.8s ease 0.5s forwards;
+            opacity: 0;
+        }
+        
+        .generate-btn:hover {
+            background: #111111;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .generate-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .mobile-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333333;
+            animation: fadeIn 0.8s ease 0.6s forwards;
+            opacity: 0;
+        }
+        
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(25, 211, 102, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            border: 1px solid rgba(25, 211, 102, 0.3);
+        }
+        
+        .whatsapp-btn:hover {
+            background: rgba(25, 211, 102, 0.2);
+        }
+        
+        .developer-credit {
+            text-align: center;
+            color: #aaaaaa;
+            font-size: 0.9rem;
+        }
+        
+        .dev-name {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .result-section {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+        
+        .result-section.active {
+            display: block;
+        }
+        
+        .image-container {
+            max-width: 100%;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .generated-image {
+            width: 100%;
+            display: block;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .action-btn {
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid #333333;
+        }
+        
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .download-btn {
+            background: rgba(255, 64, 129, 0.1);
+            color: white;
+        }
+        
+        .download-btn:hover {
+            background: rgba(255, 64, 129, 0.2);
+        }
+        
+        .new-btn {
+            background: rgba(33, 150, 243, 0.1);
+            color: white;
+        }
+        
+        .new-btn:hover {
+            background: rgba(33, 150, 243, 0.2);
+        }
+        
+        .error-message {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #f8d7da;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .error-message.active {
+            display: flex;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid transparent;
+            border-top: 4px solid #ff4081;
+            border-right: 4px solid #2196f3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(20, 20, 20, 0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.5s;
+            border: 1px solid #333333;
+            max-width: 300px;
+            backdrop-filter: blur(15px);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-icon {
+            font-size: 1.3rem;
+            color: #00c853;
+        }
+        
+        .notification-content h3 {
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+        
+        .notification-content p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .mobile-container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+            
+            .container-wrapper {
+                padding: 10px;
+                min-height: 100vh;
+            }
+            
+            .studio-title {
+                font-size: 1.5rem;
+            }
+            
+            .build-version {
+                font-size: 0.8rem;
+            }
+            
+            .generate-btn {
+                padding: 16px;
+                font-size: 1.1rem;
+            }
+            
+            .whatsapp-btn {
+                padding: 14px;
+                font-size: 0.95rem;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .gradient-pink {
+                width: 250px;
+                height: 250px;
+                top: -50px;
+                right: -50px;
+            }
+            
+            .gradient-blue {
+                width: 250px;
+                height: 250px;
+                bottom: -50px;
+                left: -50px;
+            }
+            
+            .notification {
+                top: 15px;
+                right: 15px;
+                left: 15px;
+                max-width: none;
+            }
+            
+            .row-group {
+                flex-direction: row;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <div class="gradient-pink"></div>
+        <div class="gradient-blue"></div>
+    </div>
+    
+    <div class="container-wrapper">
+        <div class="mobile-container">
+            <div class="mobile-header">
+                <div class="header-left">
+                    <div class="studio-title">IQC STUDIO</div>
+                    <div class="build-version">MOBILE BUILD v3.0</div>
+                    <div class="divider-line"></div>
+                </div>
+                
+                <div class="ready-badge">
+                    <div class="ready-dot"></div>
+                    <div class="ready-text">READY</div>
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <!-- Baris 1: Input Pesan (full width) -->
+                <div class="input-group">
+                    <div class="input-label">
+                        PESAN CHAT
+                    </div>
+                    <input type="text" id="text" class="message-input" placeholder="Ketik pesan disini...">
+                </div>
+                
+                <!-- Baris 2: Select Style -->
+                <div class="input-group">
+                    <div class="input-label">
+                        STYLE
+                    </div>
+                    <div class="custom-select-wrapper">
+                        <select class="custom-select" id="styleSelect">
+                            <option value="style1">Style 1</option>
+                            <option value="style2">Style 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Baris 3: Select Background -->
+                <div class="input-group" id="bgGroup" style="display:none;">
+                    <div class="input-label">
+                        BACKGROUND
+                    </div>
+                    <div class="custom-select-wrapper">
+                        <select class="custom-select" id="bgSelect">
+                            <option value="pink">Pink</option>
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Baris 4: Input Waktu (full width) -->
+                <div class="input-group">
+                    <div class="input-label">
+                        WAKTU
+                    </div>
+                    <input type="text" id="time" class="message-input" placeholder="22.54">
+                </div>
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Terjadi kesalahan. Periksa input Anda dan coba lagi.</span>
+            </div>
+            
+            <button class="generate-btn" id="generateBtn">
+                <i class="fas fa-bolt"></i>
+                GENERATE IMAGE
+            </button>
+            
+            <div class="result-section" id="resultSection">
+                <div class="image-container">
+                    <img id="generatedImage" class="generated-image" src="" alt="Generated Image">
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" id="downloadBtn">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </button>
+                    <button class="action-btn new-btn" id="newBtn">
+                        <i class="fas fa-redo"></i>
+                        Buat Baru
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mobile-footer">
+                <a href="https://whatsapp.com/channel/0029VbClmtmD38CS9AtqPY04" target="_blank" class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i>
+                     JOIN WA CHANNEL 
+                </a>
+                
+                <div class="developer-credit">
+                    DEV BY <span class="dev-name">Felix</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p class="loading-text">Generating Image...</p>
+    </div>
+    
+    <div class="notification" id="notification">
+        <div class="notification-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="notification-content">
+            <h3>Generate Selesai!</h3>
+            <p>Gambar berhasil dibuat dan siap diunduh</p>
+        </div>
+    </div>
+    
+    <script>
+        // ===== PERBAIKAN HANYA DI BAGIAN INI =====
+        // DOM Elements
+        const generateBtn = document.getElementById('generateBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const resultSection = document.getElementById('resultSection');
+        const generatedImage = document.getElementById('generatedImage');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const newBtn = document.getElementById('newBtn');
+        const textInput = document.getElementById('text');
+        const timeInput = document.getElementById('time');
+        const styleSelect = document.getElementById('styleSelect');
+        const bgSelect = document.getElementById('bgSelect');
+        const bgGroup = document.getElementById('bgGroup');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const notification = document.getElementById('notification');
+
+        let currentImageUrl = '';
+
+        // Tampilkan/sembunyikan background select
+        styleSelect.addEventListener('change', function() {
+            bgGroup.style.display = this.value === 'style2' ? 'block' : 'none';
+        });
+
+        // Show notification
+        function showNotification() {
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 5000);
+        }
+
+        // Show error
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('active');
+            setTimeout(() => errorMessage.classList.remove('active'), 5000);
+        }
+
+        // Generate
+        generateBtn.addEventListener('click', async function() {
+            const text = textInput.value.trim();
+            const time = timeInput.value.trim() || '22.54';
+            const style = styleSelect.value;
+
+            if (!text) {
+                showError('Harap isi pesan chat terlebih dahulu.');
+                return;
+            }
+
+            loadingOverlay.classList.add('active');
+            errorMessage.classList.remove('active');
+
+            try {
+                let imageBlob = null;
+
+                if (style === 'style1') {
+                    // ===== STYLE 1: API =====
+                    const apiUrl = `https://my.izuka-api.xyz/api/canvas/iqc?text=${encodeURIComponent(text)}&time=${encodeURIComponent(time)}`;
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+                    const response = await fetch(apiUrl, {
+                        signal: controller.signal,
+                        mode: 'cors'
+                    });
+                    clearTimeout(timeoutId);
+                    if (!response.ok) throw new Error(`API error: ${response.status}`);
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('image')) {
+                        throw new Error('API tidak mengembalikan gambar');
+                    }
+                    imageBlob = await response.blob();
+                    if (imageBlob.size === 0) throw new Error('Gambar kosong');
+
+                } else {
+                    // ===== STYLE 2: LOCAL =====
+                    const bg = bgSelect.value;
+                    // pink = bubble pink, light/dark = bubble hijau WA
+                    const bubbleColor = bg === 'pink' ? '#ffc5d5' : bg === 'dark' ? '#144D37' : '#dcf8c6';
+                    const response = await fetch('/generate-style2', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            text,
+                            time,
+                            bubbleColor,
+                            background: bg
+                        })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.error || `Server error: ${response.status}`);
+                    }
+                    imageBlob = await response.blob();
+                    if (imageBlob.size === 0) throw new Error('Gambar kosong');
+                }
+
+                if (currentImageUrl) URL.revokeObjectURL(currentImageUrl);
+                currentImageUrl = URL.createObjectURL(imageBlob);
+                generatedImage.src = currentImageUrl;
+                await new Promise((resolve, reject) => {
+                    generatedImage.onload = resolve;
+                    generatedImage.onerror = () => reject(new Error('Gagal memuat gambar'));
+                });
+
+                loadingOverlay.classList.remove('active');
+                resultSection.classList.add('active');
+                showNotification();
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (error) {
+                console.error('Error:', error);
+                loadingOverlay.classList.remove('active');
+                if (error.name === 'AbortError') {
+                    showError('Waktu permintaan habis. Coba lagi.');
+                } else if (error.message.includes('ECONNREFUSED') || error.message.includes('localhost')) {
+                    showError('Server lokal tidak berjalan. Jalankan "node server.js" terlebih dahulu.');
+                } else {
+                    showError(`Gagal: ${error.message}`);
+                }
+            } 
+        });
+
+        // Download
+        downloadBtn.addEventListener('click', function() {
+            if (!currentImageUrl) {
+                showError('Tidak ada gambar');
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = currentImageUrl;
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            link.download = `iqc-chat-${timestamp}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Buat baru
+        newBtn.addEventListener('click', function() {
+            resultSection.classList.remove('active');
+            window.scrollTo(0, 0);
+        });
+
+        // Enter key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !loadingOverlay.classList.contains('active')) {
+                generateBtn.click();
+            }
+        });
+
+        // Load
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>
