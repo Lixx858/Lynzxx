@@ -1,1 +1,0 @@
-import {openAIChat} from "../../../../lib/openai"; export async function POST(){try{const x=await openAIChat([{role:"system",content:"Reply exactly CONNECTION_OK"},{role:"user",content:"test"}]);return Response.json({ok:true,response:x.trim()})}catch(e){return Response.json({ok:false,error:e.message},{status:400})}}
