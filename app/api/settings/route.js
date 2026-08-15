@@ -1,1 +1,0 @@
-export async function GET(){return Response.json({model:process.env.OPENAI_MODEL||"gpt-4o-mini",workerConfigured:Boolean(process.env.VIDEO_WORKER_URL)})}
