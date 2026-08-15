@@ -1,0 +1,1 @@
+export async function GET(){return Response.json({ok:true,openaiConfigured:Boolean(process.env.OPENAI_API_KEY),workerConfigured:Boolean(process.env.VIDEO_WORKER_URL)})}
