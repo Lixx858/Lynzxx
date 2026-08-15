@@ -1,9 +1,0 @@
-{
-  "private": true,
-  "name": "felixdeploy",
-  "version": "1.0.0",
-  "description": "FelixDeploy Vercel deployment manager",
-  "dependencies": {
-    "jszip": "^3.10.1"
-  }
-}
