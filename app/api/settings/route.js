@@ -1,0 +1,1 @@
+export async function GET(){return Response.json({model:process.env.GEMINI_MODEL||"gemini-2.0-flash",workerConfigured:Boolean(process.env.VIDEO_WORKER_URL)})}
