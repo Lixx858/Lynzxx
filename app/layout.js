@@ -1,0 +1,1 @@
+import "./globals.css"; export const metadata={title:"ClipForge AI"}; export default function Layout({children}){return <html lang="id"><body>{children}</body></html>}
