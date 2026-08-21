@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IX - B BERSINAR</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 0, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(0, 255, 150, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== MATRIX RAIN ===== */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0.10;
+        }
+
+        .matrix-rain span {
+            position: absolute;
+            top: -100px;
+            color: #00ff88;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            animation: matrixFall linear infinite;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        @keyframes matrixFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: rgba(10, 10, 20, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 
+                0 0 40px rgba(0, 255, 255, 0.05),
+                inset 0 0 40px rgba(0, 255, 255, 0.02);
+            border: 1px solid rgba(0, 255, 255, 0.08);
+            position: relative;
+            z-index: 1;
+            animation: containerGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes containerGlow {
+            0% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.05), inset 0 0 40px rgba(0, 255, 255, 0.02); }
+            100% { box-shadow: 0 0 60px rgba(0, 255, 136, 0.08), inset 0 0 40px rgba(0, 255, 255, 0.03); }
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            padding: 25px 0 20px;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.08);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            padding: 5px 25px;
+            border-radius: 50px;
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            color: #0a0a0f;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.2); }
+            50% { box-shadow: 0 0 50px rgba(0, 255, 136, 0.4); }
+        }
+
+        .header h1 {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ff88, #00ccff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 5px 20px;
+            border-radius: 15px;
+            display: inline-block;
+            text-shadow: 0 0 60px rgba(0, 255, 136, 0.2);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.1)); }
+            100% { filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.3)); }
+        }
+
+        .header h1:hover {
+            transform: scale(1.02);
+        }
+
+        .header .subtitle {
+            color: rgba(0, 255, 255, 0.6);
+            font-size: 1.1em;
+            margin-top: 5px;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        .header .motto {
+            color: rgba(0, 255, 136, 0.3);
+            font-size: 0.9em;
+            font-style: italic;
+            margin-top: 8px;
+            letter-spacing: 4px;
+        }
+
+        /* ===== LOGIN MODAL ===== */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(20px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .login-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .login-box {
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(30px);
+            padding: 50px 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 60px rgba(0, 255, 136, 0.05);
+            text-align: center;
+        }
+
+        .login-box .lock-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .login-box h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-box .sub-login {
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 25px;
+            font-size: 0.85em;
+        }
+
+        .login-box .login-info {
+            background: rgba(0, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 0.75em;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 14px 20px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(0, 255, 255, 0.08);
+            border-radius: 15px;
+            background: rgba(0, 255, 255, 0.02);
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .login-box input:focus {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.03);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+        }
+
+        .login-box input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .login-box .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            color: #0a0a0f;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+        }
+
+        .login-box .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .login-box .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-box .login-error {
+            color: #ff00ff;
+            font-size: 0.85em;
+            margin-top: 12px;
+            display: none;
+            padding: 10px;
+            background: rgba(255, 0, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 255, 0.1);
+        }
+
+        .login-box .login-error.show {
+            display: block;
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-panel {
+            background: rgba(0, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.06);
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .admin-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .admin-panel .panel-header h3 {
+            font-size: 1.3em;
+            color: #00ff88;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-panel .panel-header .close-admin {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.4);
+            padding: 8px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .admin-panel .panel-header .close-admin:hover {
+            background: rgba(255, 0, 255, 0.1);
+            color: #fff;
+            border-color: #ff00ff;
+        }
+
+        .admin-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .admin-controls input[type="text"],
+        .admin-controls input[type="file"] {
+            padding: 12px 16px;
+            border: 2px solid rgba(0, 255, 255, 0.06);
+            border-radius: 12px;
+            background: rgba(0, 255, 255, 0.02);
+            color: #fff;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            outline: none;
+            width: 100%;
+        }
+
+        .admin-controls input:focus {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.03);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.03);
+        }
+
+        .admin-controls input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-controls .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .admin-controls button {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .admin-controls button.primary {
+            background: linear-gradient(135deg, #00ccff, #0088ff);
+            color: #fff;
+        }
+
+        .admin-controls button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 204, 255, 0.3);
+        }
+
+        .admin-controls button.success {
+            background: linear-gradient(135deg, #00ff88, #00cc88);
+            color: #0a0a0f;
+        }
+
+        .admin-controls button.success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .admin-controls button.danger {
+            background: linear-gradient(135deg, #ff00ff, #cc00ff);
+            color: #fff;
+        }
+
+        .admin-controls button.danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 0, 255, 0.3);
+        }
+
+        .admin-controls button.warning {
+            background: linear-gradient(135deg, #ff8800, #ff4400);
+            color: #fff;
+        }
+
+        .admin-controls button.warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 136, 0, 0.3);
+        }
+
+        .admin-hint {
+            margin-top: 15px;
+            padding: 12px 18px;
+            background: rgba(0, 204, 255, 0.03);
+            border-radius: 12px;
+            border-left: 3px solid #00ccff;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85em;
+        }
+
+        .admin-hint strong {
+            color: #00ccff;
+        }
+
+        /* ===== TOGGLE ADMIN BUTTON ===== */
+        .toggle-admin {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(10, 10, 20, 0.8);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95em;
+        }
+
+        .toggle-admin:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: #00ff88;
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.1);
+        }
+
+        .toggle-admin .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.6em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #00ff88;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+        }
+
+        .section-title .count-badge {
+            background: rgba(0, 255, 255, 0.04);
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-size: 0.5em;
+            font-weight: 400;
+            color: rgba(0, 255, 255, 0.3);
+        }
+
+        /* ===== STRUKTUR ===== */
+        .struktur-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .struktur-card {
+            background: rgba(0, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.04);
+            transition: all 0.4s;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .struktur-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.02), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .struktur-card:hover::before {
+            opacity: 1;
+        }
+
+        .struktur-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 255, 136, 0.15);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            background: rgba(0, 255, 255, 0.03);
+        }
+
+        .struktur-card .photo {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid rgba(0, 255, 136, 0.15);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+        }
+
+        .struktur-card .photo:hover {
+            border-color: #00ff88;
+            transform: scale(1.03);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
+        }
+
+        .struktur-card .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .struktur-card .photo .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: #00ff88;
+            font-size: 0.75em;
+            border-radius: 50%;
+            font-weight: 500;
+        }
+
+        .struktur-card .photo:hover .photo-overlay {
+            display: flex;
+        }
+
+        .struktur-card .position {
+            font-size: 0.75em;
+            color: #00ccff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .struktur-card .name {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            padding: 4px 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .struktur-card .name:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        /* ===== MURID ===== */
+        .murid-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .murid-stats .stat {
+            background: rgba(0, 255, 255, 0.02);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 255, 255, 0.04);
+            font-size: 0.9em;
+        }
+
+        .murid-stats .stat .num {
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .murid-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+        }
+
+        .murid-item {
+            background: rgba(0, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 18px 12px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.03);
+            transition: all 0.3s;
+        }
+
+        .murid-item:hover {
+            transform: translateY(-3px);
+            background: rgba(0, 255, 255, 0.04);
+            border-color: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .murid-item .murid-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 136, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .murid-item .murid-photo:hover {
+            border-color: #00ff88;
+            transform: scale(1.05);
+        }
+
+        .murid-item .murid-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .murid-item .murid-photo .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: #00ff88;
+            font-size: 0.6em;
+            border-radius: 50%;
+        }
+
+        .murid-item .murid-photo:hover .photo-overlay {
+            display: flex;
+        }
+
+        .murid-item .name {
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .murid-item .name:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .murid-item .gender-tag {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 50px;
+            font-size: 0.6em;
+            font-weight: 600;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gender-tag.laki {
+            background: rgba(0, 204, 255, 0.1);
+            color: #00ccff;
+        }
+
+        .gender-tag.perempuan {
+            background: rgba(255, 0, 255, 0.1);
+            color: #ff00ff;
+        }
+
+        /* ===== PIKET ===== */
+        .piket-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .piket-item {
+            background: rgba(0, 255, 255, 0.02);
+            padding: 16px 20px;
+            border-radius: 14px;
+            border-left: 4px solid #00ff88;
+            transition: all 0.3s;
+        }
+
+        .piket-item:hover {
+            background: rgba(0, 255, 255, 0.04);
+            transform: translateX(5px);
+            border-left-color: #00ccff;
+        }
+
+        .piket-item .day {
+            font-weight: 700;
+            color: #00ff88;
+            font-size: 1em;
+            margin-bottom: 6px;
+        }
+
+        .piket-item .day .day-icon {
+            margin-right: 6px;
+        }
+
+        .piket-item .members {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+
+        .piket-item .members .member-name {
+            display: inline-block;
+            background: rgba(0, 255, 255, 0.03);
+            padding: 1px 10px;
+            border-radius: 12px;
+            margin: 2px 3px;
+            font-size: 0.9em;
+        }
+
+        /* ===== JADWAL ===== */
+        .jadwal-wrapper {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 255, 0.04);
+        }
+
+        .jadwal-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 400px;
+        }
+
+        .jadwal-table th {
+            background: rgba(0, 255, 255, 0.02);
+            color: #00ff88;
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .jadwal-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .jadwal-table tr:hover td {
+            background: rgba(0, 255, 255, 0.02);
+        }
+
+        .jadwal-table .hari {
+            font-weight: 600;
+            color: #00ccff;
+            width: 120px;
+        }
+
+        .jadwal-table .pelajaran-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .jadwal-table .pelajaran-item {
+            background: rgba(0, 255, 255, 0.04);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .jadwal-table .pelajaran-item:hover {
+            background: rgba(0, 255, 136, 0.08);
+            border-color: rgba(0, 255, 136, 0.15);
+        }
+
+        .jadwal-table .pelajaran-item .hapus-btn {
+            color: #ff00ff;
+            cursor: pointer;
+            font-size: 0.8em;
+            opacity: 0.4;
+            transition: all 0.3s;
+            background: none;
+            border: none;
+            padding: 0 4px;
+        }
+
+        .jadwal-table .pelajaran-item .hapus-btn:hover {
+            opacity: 1;
+        }
+
+        .jadwal-table .tambah-pelajaran {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #00ccff;
+            cursor: pointer;
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px dashed rgba(0, 204, 255, 0.2);
+            font-size: 0.85em;
+            transition: all 0.3s;
+            background: transparent;
+        }
+
+        .jadwal-table .tambah-pelajaran:hover {
+            border-color: #00ccff;
+            background: rgba(0, 204, 255, 0.05);
+        }
+
+        .jadwal-table .keterangan {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85em;
+            font-style: italic;
+        }
+
+        /* ===== ALBUM ===== */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .album-item {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 255, 0.04);
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            aspect-ratio: 4/3;
+            background: rgba(0, 255, 255, 0.01);
+        }
+
+        .album-item:hover {
+            transform: scale(1.03);
+            border-color: rgba(0, 255, 136, 0.15);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .album-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s;
+        }
+
+        .album-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .album-item .album-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: #fff;
+            font-size: 0.85em;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .album-item:hover .album-overlay {
+            opacity: 1;
+        }
+
+        .album-upload-area {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .album-upload-area input[type="file"] {
+            padding: 12px 16px;
+            border: 2px dashed rgba(0, 255, 255, 0.06);
+            border-radius: 14px;
+            background: rgba(0, 255, 255, 0.01);
+            color: rgba(255, 255, 255, 0.4);
+            flex: 1;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .album-upload-area input[type="file"]:hover {
+            border-color: rgba(0, 255, 136, 0.15);
+        }
+
+        /* ===== DEVELOPER ===== */
+        .developer {
+            text-align: center;
+            padding: 25px 20px 10px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(0, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.9em;
+            letter-spacing: 2px;
+        }
+
+        .developer strong {
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .developer .heart {
+            color: #ff00ff;
+            display: inline-block;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header .subtitle {
+                font-size: 0.9em;
+            }
+
+            .struktur-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 14px;
+            }
+
+            .murid-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                gap: 10px;
+            }
+
+            .murid-item .murid-photo {
+                width: 60px;
+                height: 60px;
+            }
+
+            .piket-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+
+            .album-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .admin-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-controls .btn-group {
+                flex-direction: column;
+            }
+
+            .admin-controls button {
+                min-width: auto;
+            }
+
+            .toggle-admin {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 16px;
+                font-size: 0.8em;
+            }
+
+            .login-box {
+                padding: 30px 20px;
+                margin: 0 15px;
+            }
+
+            .jadwal-table .hari {
+                width: 80px;
+                font-size: 0.85em;
+            }
+
+            .jadwal-table td {
+                padding: 10px 12px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.4em;
+            }
+
+            .struktur-card .photo {
+                width: 80px;
+                height: 80px;
+            }
+
+            .section-title {
+                font-size: 1.2em;
+            }
+
+            .piket-item .members .member-name {
+                display: inline;
+                background: none;
+                padding: 0;
+                margin: 0 2px;
+            }
+
+            .jadwal-table .pelajaran-item {
+                font-size: 0.8em;
+                padding: 4px 10px;
+            }
+
+            .login-box {
+                padding: 25px 18px;
+            }
+
+            .login-box h2 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== MATRIX RAIN BACKGROUND ===== -->
+    <div class="matrix-rain" id="matrixRain"></div>
+
+    <!-- ===== LOGIN MODAL ===== -->
+    <div class="login-overlay" id="loginModal">
+        <div class="login-box">
+            <div class="lock-icon">🔐</div>
+            <h2>Admin Panel</h2>
+            <p class="sub-login">Masukkan kredensial untuk mengakses kontrol admin</p>
+            <div class="login-info">
+                ⚡ Gunakan akun yang diberikan oleh pengembang
+            </div>
+            <input type="text" id="loginUser" placeholder="Masukkan Username">
+            <input type="password" id="loginPass" placeholder="Masukkan Password">
+            <button class="login-btn" onclick="handleLogin()">🚀 Masuk</button>
+            <div class="login-error" id="loginError">❌ Username atau password salah!</div>
+        </div>
+    </div>
+
+    <!-- ===== TOGGLE ADMIN ===== -->
+    <button class="toggle-admin" onclick="toggleAdminPanel()">
+        <span class="dot"></span>
+        Admin Panel
+    </button>
+
+    <!-- ===== MAIN CONTAINER ===== -->
+    <div class="container" id="mainContainer">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="badge">⚡ RPL GENERATION ⚡</div>
+            <h1 id="webTitle" onclick="editTitle()">IX - B BERSINAR</h1>
+            <div class="subtitle">✨ Coding • Creating • Innovating</div>
+            <div class="motto">"Debug Your Life, Code Your Future"</div>
+        </div>
+
+        <!-- ADMIN PANEL -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="panel-header">
+                <h3>🛠️ Panel Kontrol Admin</h3>
+                <button class="close-admin" onclick="toggleAdminPanel()">✕ Tutup</button>
+            </div>
+            <div class="admin-controls">
+                <input type="text" id="titleInput" placeholder="Ubah Nama Website" />
+                <div class="btn-group">
+                    <button class="primary" onclick="updateTitle()">Update Judul</button>
+                </div>
+                <input type="file" id="photoUpload" accept="image/*" />
+                <div class="btn-group">
+                    <button class="success" onclick="uploadPhoto()">+ Tambah Foto Album</button>
+                </div>
+                <input type="file" id="albumUpload" accept="image/*" multiple />
+                <div class="btn-group">
+                    <button class="success" onclick="uploadAlbumPhoto()">📸 Upload ke Album</button>
+                </div>
+                <div class="btn-group">
+                    <button class="warning" onclick="resetData()">🔄 Reset Data</button>
+                    <button class="danger" onclick="logoutAdmin()">🚪 Logout</button>
+                </div>
+            </div>
+            <div class="admin-hint">
+                💡 <strong>Tips:</strong> Klik pada nama atau foto untuk mengubah. Klik pelajaran untuk edit. Klik ➕ untuk tambah pelajaran. Data otomatis tersimpan.
+            </div>
+        </div>
+
+        <!-- STRUKTUR KELAS -->
+        <div class="section">
+            <h2 class="section-title">🏫 Struktur Kelas <span class="count-badge">7 Jabatan</span></h2>
+            <div class="struktur-grid" id="strukturGrid"></div>
+        </div>
+
+        <!-- DAFTAR MURID -->
+        <div class="section">
+            <h2 class="section-title">👨‍🎓 Daftar Murid <span class="count-badge">32 Siswa</span></h2>
+            <div class="murid-stats">
+                <span class="stat">👨 Laki-laki: <span class="num" id="lakiCount">0</span></span>
+                <span class="stat">👩 Perempuan: <span class="num" id="perempuanCount">0</span></span>
+                <span class="stat">📊 Total: <span class="num" id="totalCount">0</span></span>
+            </div>
+            <div class="murid-grid" id="muridGrid"></div>
+        </div>
+
+        <!-- DAFTAR PIKET -->
+        <div class="section">
+            <h2 class="section-title">📋 Daftar Piket <span class="count-badge">6 Hari</span></h2>
+            <div class="piket-grid" id="piketGrid"></div>
+        </div>
+
+        <!-- JADWAL PELAJARAN -->
+        <div class="section">
+            <h2 class="section-title">📅 Jadwal Pelajaran <span class="count-badge">Klik untuk edit</span></h2>
+            <div class="jadwal-wrapper">
+                <table class="jadwal-table">
+                    <thead>
+                        <tr>
+                            <th>Hari</th>
+                            <th>Pelajaran</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jadwalBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ALBUM FOTO -->
+        <div class="section">
+            <h2 class="section-title">📸 Album Foto Bersama <span class="count-badge" id="albumCount">0 Foto</span></h2>
+            <div class="album-grid" id="albumGrid"></div>
+            <div class="album-upload-area">
+                <input type="file" id="albumUploadBottom" accept="image/*" multiple />
+                <button class="success" onclick="uploadAlbumPhotoBottom()" style="padding:12px 24px;border:none;border-radius:12px;background:linear-gradient(135deg,#00ff88,#00cc88);color:#0a0a0f;font-weight:600;cursor:pointer;">📸 Upload Foto</button>
+            </div>
+        </div>
+
+        <!-- DEVELOPER -->
+        <div class="developer">
+            <span class="heart">❤️</span> Developed by <strong>Khalfani Felix Fajar Ardiyanto</strong> <span class="heart">❤️</span><br>
+            <span style="font-size:0.8em;opacity:0.6;">IX - B BERSINAR &bull; 2024</span>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // MATRIX RAIN
+        // ============================================================
+        (function createMatrixRain() {
+            const container = document.getElementById('matrixRain');
+            const chars = '0123456789ABCDEF';
+            for (let i = 0; i < 30; i++) {
+                const span = document.createElement('span');
+                span.textContent = chars[Math.floor(Math.random() * chars.length)];
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                span.style.animationDelay = (Math.random() * 10) + 's';
+                span.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                container.appendChild(span);
+            }
+        })();
+
+        // ============================================================
+        // DATA
+        // ============================================================
+        const DEFAULT_DATA = {
+            title: 'IX - B BERSINAR',
+            struktur: [
+                { position: 'Wali Kelas', name: 'Ibu Siti Rahayu, S.Pd.', photo: 'https://ui-avatars.com/api/?name=Siti+Rahayu&size=200&background=00ff88&color=fff&bold=true' },
+                { position: 'Ketua Kelas', name: 'Ahmad Fauzi', photo: 'https://ui-avatars.com/api/?name=Ahmad+Fauzi&size=200&background=00ccff&color=fff&bold=true' },
+                { position: 'Wakil Ketua', name: 'Dewi Sartika', photo: 'https://ui-avatars.com/api/?name=Dewi+Sartika&size=200&background=ff00ff&color=fff&bold=true' },
+                { position: 'Bendahara 1', name: 'Rina Anggraini', photo: 'https://ui-avatars.com/api/?name=Rina+Anggraini&size=200&background=00ff88&color=fff&bold=true' },
+                { position: 'Bendahara 2', name: 'Budi Santoso', photo: 'https://ui-avatars.com/api/?name=Budi+Santoso&size=200&background=ff8800&color=fff&bold=true' },
+                { position: 'Sekretaris 1', name: 'Laila Rahma', photo: 'https://ui-avatars.com/api/?name=Laila+Rahma&size=200&background=00ccff&color=fff&bold=true' },
+                { position: 'Sekretaris 2', name: 'Rizky Ramadhan', photo: 'https://ui-avatars.com/api/?name=Rizky+Ramadhan&size=200&background=ff00ff&color=fff&bold=true' }
+            ],
+            murid: [],
+            piket: [],
+            jadwal: {
+                'Senin': ['Matematika', 'Fisika', 'Kimia'],
+                'Selasa': ['Bahasa Indonesia', 'Bahasa Inggris', 'Sejarah'],
+                'Rabu': ['Biologi', 'Geografi', 'Ekonomi'],
+                'Kamis': ['Pendidikan Agama', 'PKN', 'Seni Budaya', 'Prakarya'],
+                'Jumat': ['Kokurikuler'],
+                'Sabtu': ['Olahraga', 'Bimbingan Konseling']
+            },
+            album: [
+                'https://picsum.photos/seed/class1/600/400',
+                'https://picsum.photos/seed/class2/600/400',
+                'https://picsum.photos/seed/class3/600/400',
+                'https://picsum.photos/seed/class4/600/400',
+                'https://picsum.photos/seed/class5/600/400'
+            ]
+        };
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+        let isAdminLoggedIn = false;
+
+        // ============================================================
+        // UTILITY FUNCTIONS
+        // ============================================================
+        function generateStudents() {
+            const maleNames = ['Ahmad', 'Budi', 'Cahyo', 'Doni', 'Eko', 'Fajar', 'Gilang', 'Hendi', 'Irfan', 'Joko',
+                'Kurnia', 'Lukman', 'Maman', 'Nanda', 'Oka', 'Putra', 'Rizky', 'Sandi'
+            ];
+            const femaleNames = ['Ani', 'Bella', 'Cindy', 'Dewi', 'Eka', 'Fitri', 'Gita', 'Hana', 'Indah', 'Jasmine',
+                'Kartika', 'Lina', 'Maya', 'Nia'
+            ];
+
+            let students = [];
+            for (let i = 0; i < 18; i++) {
+                const name = maleNames[i % maleNames.length] + (i >= maleNames.length ? ` ${Math.floor(i/maleNames.length)+1}` : '');
+                students.push({ 
+                    name: name, 
+                    gender: 'Laki-laki',
+                    photo: `https://ui-avatars.com/api/?name=${name.replace(/ /g, '+')}&size=150&background=00ccff&color=fff&bold=true`
+                });
+            }
+            for (let i = 0; i < 14; i++) {
+                const name = femaleNames[i % femaleNames.length] + (i >= femaleNames.length ? ` ${Math.floor(i/femaleNames.length)+1}` : '');
+                students.push({ 
+                    name: name, 
+                    gender: 'Perempuan',
+                    photo: `https://ui-avatars.com/api/?name=${name.replace(/ /g, '+')}&size=150&background=ff00ff&color=fff&bold=true`
+                });
+            }
+            for (let i = students.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [students[i], students[j]] = [students[j], students[i]];
+            }
+            return students;
+        }
+
+        function generatePiket(students) {
+            const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            let shuffled = [...students].sort(() => Math.random() - 0.5);
+            let piket = [];
+            const baseCount = Math.floor(32 / 6);
+            const extra = 32 % 6;
+            let index = 0;
+            for (let i = 0; i < days.length; i++) {
+                const count = baseCount + (i < extra ? 1 : 0);
+                const group = shuffled.slice(index, index + count);
+                index += count;
+                piket.push({
+                    day: days[i],
+                    members: group.map(s => s.name)
+                });
+            }
+            return piket;
+        }
+
+        // ============================================================
+        // RENDER FUNCTIONS
+        // ============================================================
+        function renderAll() {
+            renderStruktur();
+            renderMurid();
+            renderPiket();
+            renderJadwal();
+            renderAlbum();
+            updateStats();
+            document.getElementById('webTitle').textContent = data.title;
+            document.title = data.title;
+        }
+
+        function renderStruktur() {
+            const grid = document.getElementById('strukturGrid');
+            grid.innerHTML = '';
+            data.struktur.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'struktur-card';
+                card.innerHTML = `
+                    <div class="photo" onclick="editStrukturPhoto(${index})">
+                        <img src="${item.photo}" alt="${item.name}" id="strukturPhoto_${index}">
+                        <div class="photo-overlay">📷 Ganti Foto</div>
+                    </div>
+                    <div class="position">${item.position}</div>
+                    <div class="name" onclick="editStrukturName(${index})" id="strukturName_${index}">${item.name}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderMurid() {
+            const grid = document.getElementById('muridGrid');
+            grid.innerHTML = '';
+            data.murid.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'murid-item';
+                div.innerHTML = `
+                    <div class="murid-photo" onclick="editMuridPhoto(${index})">
+                        <img src="${item.photo}" alt="${item.name}" id="muridPhoto_${index}">
+                        <div class="photo-overlay">📷 Ganti</div>
+                    </div>
+                    <div class="name" onclick="editMuridName(${index})" id="muridName_${index}">${item.name}</div>
+                    <span class="gender-tag ${item.gender === 'Laki-laki' ? 'laki' : 'perempuan'}">${item.gender}</span>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function renderPiket() {
+            const grid = document.getElementById('piketGrid');
+            grid.innerHTML = '';
+            const dayIcons = {
+                'Senin': '📅', 'Selasa': '📅', 'Rabu': '📅',
+                'Kamis': '📅', 'Jumat': '📅', 'Sabtu': '📅'
+            };
+            data.piket.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'piket-item';
+                const membersHtml = item.members.map(m => `<span class="member-name">${m}</span>`).join(' ');
+                div.innerHTML = `
+                    <div class="day"><span class="day-icon">${dayIcons[item.day] || '📅'}</span> ${item.day}</div>
+                    <div class="members">${membersHtml}</div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function renderJadwal() {
+            const tbody = document.getElementById('jadwalBody');
+            tbody.innerHTML = '';
+            const hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            
+            hariList.forEach(hari => {
+                const pelajaran = data.jadwal[hari] || [];
+                const tr = document.createElement('tr');
+                
+                // Keterangan untuk setiap hari
+                let keterangan = '';
+                if (hari === 'Jumat') keterangan = '🏸 Kokurikuler';
+                else if (hari === 'Sabtu') keterangan = '⚽ Ekstrakurikuler';
+                else keterangan = `${pelajaran.length} Mapel`;
+                
+                tr.innerHTML = `
+                    <td class="hari">${hari}</td>
+                    <td>
+                        <div class="pelajaran-list" id="pelajaranList_${hari}">
+                            ${pelajaran.map((p, idx) => `
+                                <span class="pelajaran-item" onclick="${isAdminLoggedIn ? `editPelajaran('${hari}', ${idx})` : ''}">
+                                    ${p}
+                                    ${isAdminLoggedIn ? `<span class="hapus-btn" onclick="event.stopPropagation();hapusPelajaran('${hari}', ${idx})">✕</span>` : ''}
+                                </span>
+                            `).join('')}
+                            ${isAdminLoggedIn ? `
+                                <button class="tambah-pelajaran" onclick="tambahPelajaran('${hari}')">
+                                    ➕ Tambah
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                    <td class="keterangan">${keterangan}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderAlbum() {
+            const grid = document.getElementById('albumGrid');
+            grid.innerHTML = '';
+            data.album.forEach((url, index) => {
+                const div = document.createElement('div');
+                div.className = 'album-item';
+                div.innerHTML = `
+                    <img src="${url}" alt="Foto ${index + 1}" loading="lazy">
+                    <div class="album-overlay">📸 Foto ${index + 1}</div>
+                `;
+                div.onclick = () => window.open(url, '_blank');
+                div.ondblclick = (e) => {
+                    e.stopPropagation();
+                    if (isAdminLoggedIn && confirm(`Hapus foto ${index + 1}?`)) {
+                        data.album.splice(index, 1);
+                        renderAll();
+                        saveToLocalStorage();
+                    }
+                };
+                grid.appendChild(div);
+            });
+            document.getElementById('albumCount').textContent = data.album.length + ' Foto';
+        }
+
+        function updateStats() {
+            const laki = data.murid.filter(m => m.gender === 'Laki-laki').length;
+            const perempuan = data.murid.filter(m => m.gender === 'Perempuan').length;
+            document.getElementById('lakiCount').textContent = laki;
+            document.getElementById('perempuanCount').textContent = perempuan;
+            document.getElementById('totalCount').textContent = data.murid.length;
+        }
+
+        // ============================================================
+        // EDIT FUNCTIONS (Admin Only)
+        // ============================================================
+        function editStrukturName(index) {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const current = data.struktur[index].name;
+            const newName = prompt('Edit nama:', current);
+            if (newName && newName.trim() !== '') {
+                data.struktur[index].name = newName.trim();
+                renderAll();
+                saveToLocalStorage();
+            }
+        }
+
+        function editMuridName(index) {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const current = data.murid[index].name;
+            const newName = prompt('Edit nama murid:', current);
+            if (newName && newName.trim() !== '') {
+                const oldName = data.murid[index].name;
+                data.murid[index].name = newName.trim();
+                data.piket.forEach(day => {
+                    const idx = day.members.indexOf(oldName);
+                    if (idx !== -1) {
+                        day.members[idx] = newName.trim();
+                    }
+                });
+                renderAll();
+                saveToLocalStorage();
+            }
+        }
+
+        function editStrukturPhoto(index) {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        data.struktur[index].photo = event.target.result;
+                        renderAll();
+                        saveToLocalStorage();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function editMuridPhoto(index) {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        data.murid[index].photo = event.target.result;
+                        renderAll();
+                        saveToLocalStorage();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function editPelajaran(hari, index) {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const current = data.jadwal[hari][index];
+            const newName = prompt(`Edit pelajaran ${hari} ke-${index+1}:`, current);
+            if (newName && newName.trim() !== '') {
+                data.jadwal[hari][index] = newName.trim();
+                renderAll();
+                saveToLocalStorage();
+            }
+        }
+
+        function tambahPelajaran(hari) {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const newName = prompt(`Tambah pelajaran baru untuk ${hari}:`);
+            if (newName && newName.trim() !== '') {
+                if (!data.jadwal[hari]) data.jadwal[hari] = [];
+                data.jadwal[hari].push(newName.trim());
+                renderAll();
+                saveToLocalStorage();
+            }
+        }
+
+        function hapusPelajaran(hari, index) {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            if (confirm(`Hapus pelajaran "${data.jadwal[hari][index]}"?`)) {
+                data.jadwal[hari].splice(index, 1);
+                renderAll();
+                saveToLocalStorage();
+            }
+        }
+
+        function editTitle() {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const current = data.title;
+            const newTitle = prompt('Edit judul website:', current);
+            if (newTitle && newTitle.trim() !== '') {
+                data.title = newTitle.trim();
+                renderAll();
+                saveToLocalStorage();
+            }
+        }
+
+        function updateTitle() {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const input = document.getElementById('titleInput');
+            if (input.value.trim() !== '') {
+                data.title = input.value.trim();
+                renderAll();
+                saveToLocalStorage();
+                input.value = '';
+            }
+        }
+
+        // ============================================================
+        // PHOTO UPLOAD FUNCTIONS
+        // ============================================================
+        function uploadPhoto() {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const input = document.getElementById('photoUpload');
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    data.album.push(e.target.result);
+                    renderAll();
+                    saveToLocalStorage();
+                    input.value = '';
+                    alert('✅ Foto berhasil ditambahkan ke album!');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('⚠️ Pilih file foto terlebih dahulu!');
+            }
+        }
+
+        function uploadAlbumPhoto() {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const input = document.getElementById('albumUpload');
+            handleMultipleUpload(input);
+        }
+
+        function uploadAlbumPhotoBottom() {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            const input = document.getElementById('albumUploadBottom');
+            handleMultipleUpload(input);
+        }
+
+        function handleMultipleUpload(input) {
+            const files = input.files;
+            if (files.length > 0) {
+                let loaded = 0;
+                for (let file of files) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        data.album.push(e.target.result);
+                        loaded++;
+                        if (loaded === files.length) {
+                            renderAll();
+                            saveToLocalStorage();
+                            input.value = '';
+                            alert(`✅ ${files.length} foto berhasil ditambahkan ke album!`);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                alert('⚠️ Pilih file foto terlebih dahulu!');
+            }
+        }
+
+        // ============================================================
+        // ADMIN LOGIN / LOGOUT
+        // ============================================================
+        function handleLogin() {
+            const username = document.getElementById('loginUser').value.trim();
+            const password = document.getElementById('loginPass').value.trim();
+
+            // Default credentials (admin dapat mengubahnya di sini)
+            const validUsername = 'admin';
+            const validPassword = 'admin123';
+
+            if (username === validUsername && password === validPassword) {
+                isAdminLoggedIn = true;
+                document.getElementById('loginModal').classList.remove('active');
+                document.getElementById('adminPanel').classList.add('active');
+                document.querySelector('.toggle-admin .dot').style.background = '#00ff88';
+                // Reset login fields
+                document.getElementById('loginUser').value = '';
+                document.getElementById('loginPass').value = '';
+                showNotification('✅ Selamat datang, Admin!', 'success');
+                renderAll();
+            } else {
+                const errorEl = document.getElementById('loginError');
+                errorEl.classList.add('show');
+                setTimeout(() => {
+                    errorEl.classList.remove('show');
+                }, 3000);
+                // Clear password field
+                document.getElementById('loginPass').value = '';
+                document.getElementById('loginPass').focus();
+            }
+        }
+
+        function logoutAdmin() {
+            if (confirm('Yakin ingin logout?')) {
+                isAdminLoggedIn = false;
+                document.getElementById('adminPanel').classList.remove('active');
+                document.querySelector('.toggle-admin .dot').style.background = '#00ff88';
+                showNotification('🔒 Anda telah logout', 'info');
+                renderAll();
+            }
+        }
+
+        function toggleAdminPanel() {
+            if (isAdminLoggedIn) {
+                document.getElementById('adminPanel').classList.toggle('active');
+            } else {
+                document.getElementById('loginModal').classList.add('active');
+                document.getElementById('loginUser').focus();
+            }
+        }
+
+        // Enter key on login
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('active')) {
+                handleLogin();
+            }
+            // Escape to close login
+            if (e.key === 'Escape' && document.getElementById('loginModal').classList.contains('active')) {
+                document.getElementById('loginModal').classList.remove('active');
+                document.getElementById('loginUser').value = '';
+                document.getElementById('loginPass').value = '';
+            }
+        });
+
+        // Close login modal when clicking outside
+        document.getElementById('loginModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                document.getElementById('loginModal').classList.remove('active');
+                document.getElementById('loginUser').value = '';
+                document.getElementById('loginPass').value = '';
+            }
+        });
+
+        // ============================================================
+        // RESET DATA
+        // ============================================================
+        function resetData() {
+            if (!isAdminLoggedIn) { alert('🔒 Login sebagai admin terlebih dahulu!'); return; }
+            if (confirm('⚠️ Yakin ingin mereset semua data ke default? Semua perubahan akan hilang!')) {
+                if (confirm('Konfirmasi lagi: Reset data?')) {
+                    data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                    data.murid = generateStudents();
+                    data.piket = generatePiket(data.murid);
+                    renderAll();
+                    saveToLocalStorage();
+                    showNotification('🔄 Data telah direset ke default', 'warning');
+                }
+            }
+        }
+
+        // ============================================================
+        // LOCAL STORAGE
+        // ============================================================
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('kelasDataIXB', JSON.stringify(data));
+            } catch (e) {
+                console.warn('Storage not available');
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('kelasDataIXB');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    data = { ...DEFAULT_DATA, ...parsed };
+                    if (!data.struktur) data.struktur = DEFAULT_DATA.struktur;
+                    if (!data.jadwal) data.jadwal = DEFAULT_DATA.jadwal;
+                    if (!data.album) data.album = DEFAULT_DATA.album;
+                    if (!data.murid || data.murid.length !== 32) {
+                        data.murid = generateStudents();
+                        data.piket = generatePiket(data.murid);
+                    }
+                    if (!data.piket || data.piket.length === 0) {
+                        data.piket = generatePiket(data.murid);
+                    }
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Error loading data');
+            }
+            return false;
+        }
+
+        // ============================================================
+        // NOTIFICATION
+        // ============================================================
+        function showNotification(msg, type = 'info') {
+            const colors = {
+                success: '#00ff88',
+                warning: '#ff8800',
+                info: '#00ccff',
+                error: '#ff00ff'
+            };
+            const div = document.createElement('div');
+            div.style.cssText = `
+                position: fixed; top: 30px; right: 30px; padding: 16px 28px;
+                background: rgba(10,10,20,0.92); backdrop-filter: blur(15px);
+                color: #fff; border-radius: 16px; font-weight: 500;
+                border-left: 4px solid ${colors[type] || colors.info};
+                box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+                z-index: 10000; font-size: 0.95em;
+                animation: fadeIn 0.4s ease;
+                max-width: 400px;
+                border: 1px solid rgba(255,255,255,0.05);
+            `;
+            div.textContent = msg;
+            document.body.appendChild(div);
+            setTimeout(() => {
+                div.style.opacity = '0';
+                div.style.transition = 'opacity 0.5s';
+                setTimeout(() => div.remove(), 500);
+            }, 3500);
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        if (!loadFromLocalStorage()) {
+            data.murid = generateStudents();
+            data.piket = generatePiket(data.murid);
+            renderAll();
+            saveToLocalStorage();
+        } else {
+            renderAll();
+        }
+
+        console.log('🌟 IX - B BERSINAR Loaded!');
+        console.log('👨‍💻 Developed by Khalfani Felix Fajar Ardiyanto');
+        console.log('🔑 Login: admin / admin123');
+        console.log('📋 Piket: Senin - Sabtu (6 hari)');
+        console.log('📅 Jadwal: Senin(3), Selasa(3), Rabu(3), Kamis(4), Jumat(Kokurikuler), Sabtu(2)');
+        console.log('💡 Klik tombol Admin Panel untuk login (input manual)');
+    </script>
+</body>
+</html>
