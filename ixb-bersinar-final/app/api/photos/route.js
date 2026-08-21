@@ -1,1 +1,0 @@
-import {list} from '@vercel/blob';import {NextResponse} from 'next/server';export async function GET(){try{const g=await list({prefix:'gallery/',limit:100});return NextResponse.json({photos:g.blobs.map(b=>({url:b.url,path:b.pathname})).reverse()})}catch{return NextResponse.json({photos:[]})}}

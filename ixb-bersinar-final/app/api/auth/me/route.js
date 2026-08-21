@@ -1,2 +1,0 @@
-import {NextResponse} from 'next/server';import {createHmac} from 'crypto';
-export async function GET(req){const token=req.cookies.get('ixb_admin')?.value;if(!token)return NextResponse.json({authenticated:false});const [p,s]=token.split('.');try{const expected=createHmac('sha256',process.env.SESSION_SECRET).update(p).digest('hex');const d=JSON.parse(Buffer.from(p,'base64url').toString());return NextResponse.json({authenticated:s===expected&&d.u===process.env.ADMIN_USERNAME&&Date.now()-d.t<604800000})}catch{return NextResponse.json({authenticated:false})}}
